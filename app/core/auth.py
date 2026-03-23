@@ -97,9 +97,15 @@ class JWTManager:
         Implementa cache de token: reutiliza o token atual se ainda válido,
         ou gera um novo se expirado ou inexistente.
 
+        Se um token pré-configurado existir (settings.api_token), usa ele
+        em vez de gerar um novo.
+
         Returns:
             str: Token JWT válido
         """
+        if settings.api_token:
+            return settings.api_token
+
         if self._current_token and not self.is_token_expired(self._current_token):
             return self._current_token
 

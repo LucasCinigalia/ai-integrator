@@ -16,7 +16,8 @@ Este documento define as regras, padrões e diretrizes que agentes de IA devem s
 6. [Testes](#testes)
 7. [Workflow de Desenvolvimento](#workflow-de-desenvolvimento)
 8. [Áreas Sensíveis](#áreas-sensíveis)
-9. [Checklist de Modificações](#checklist-de-modificações)
+9. [Consulta de Documentação Externa](#consulta-de-documentação-externa)
+10. [Checklist de Modificações](#checklist-de-modificações)
 
 ---
 
@@ -479,6 +480,55 @@ git commit -m "refactor: extrai lógica de autenticação para JWTManager"
 
 ---
 
+## 🔴 CRÍTICO: Consulta de Documentação Externa
+
+### API RD Station Conversas v2
+
+**Prioridade**: 🔴 MÁXIMA
+
+**Regra Obrigatória**:
+
+SEMPRE que precisar de informações sobre a **API RD Station Conversas v2**, você DEVE:
+
+1. ✅ **Usar o MCP Context7** para consultar a documentação oficial
+2. ✅ **URL de referência**: https://developers.rdstation.com/reference/conversas-v2-introduction
+3. ✅ **Verificar informações atualizadas** antes de implementar qualquer integração
+
+**Como Usar o MCP Context7**:
+
+1. Primeiro, resolver o Library ID:
+   - Usar a ferramenta `resolve-library-id` com query relacionada à "RD Station Conversas API"
+   
+2. Depois, consultar a documentação:
+   - Usar a ferramenta `query-docs` com o libraryId obtido
+   - Fazer perguntas específicas sobre endpoints, autenticação, schemas, etc.
+
+**Exemplo de Uso**:
+
+```
+1. Resolver Library ID:
+   Tool: resolve-library-id
+   Query: "RD Station Conversas API documentation"
+
+2. Consultar documentação:
+   Tool: query-docs
+   LibraryId: (obtido no passo 1)
+   Query: "Como criar um contato na API RD Station Conversas v2?"
+```
+
+**Proibições**:
+
+- ❌ **NUNCA fazer suposições** sobre endpoints, schemas ou comportamento da API
+- ❌ **NUNCA usar informações desatualizadas** de documentação local sem verificar
+- ❌ **NUNCA implementar integração** sem consultar o Context7 primeiro
+- ❌ **NUNCA ignorar mudanças** na API oficial
+
+**Arquivo de Referência Local**:
+
+- `references/rd-station-conversas-api.md` - Contém informações básicas, mas SEMPRE verificar com Context7 para garantir atualização
+
+---
+
 ## ✅ Checklist de Modificações
 
 ### Antes de Commit
@@ -523,6 +573,7 @@ git commit -m "refactor: extrai lógica de autenticação para JWTManager"
 8. ❌ **Modificar áreas críticas sem ler CONCERNS.md**
 9. ❌ **Quebrar backward compatibility** sem migração
 10. ❌ **Ignorar erros de `ruff` ou `pytest`**
+11. ❌ **Consultar API RD Conversas sem usar Context7** (informações podem estar desatualizadas)
 
 ---
 
@@ -597,6 +648,7 @@ uvicorn main:app --reload
 
 | Data | Versão | Mudanças |
 |------|--------|----------|
+| 2026-03-23 | 1.1.0 | Adicionada regra crítica sobre uso obrigatório do MCP Context7 para API RD Conversas |
 | 2026-03-22 | 1.0.0 | Criação inicial do AGENTS.md |
 
 ---

@@ -2,7 +2,7 @@
 
 Este documento mantém o estado atual do projeto, decisões, blockers, lições aprendidas e TODOs.
 
-**Última atualização**: 2026-03-22
+**Última atualização**: 2026-03-23
 
 ---
 
@@ -233,6 +233,24 @@ Nenhum blocker ativo no momento.
 
 ## 📝 Notas de Sessão
 
+### Sessão 2026-03-23
+
+**Objetivo**: Adicionar documentação da API RD Station Conversas v2 usando Context7 MCP.
+
+**Atividades**:
+- ✅ Consultada documentação oficial via Context7 MCP
+- ✅ Criado documento de referência `references/rd-station-conversas-api.md`
+- ✅ Documentados todos os endpoints principais (Contatos, Mensagens, Templates, etc.)
+- ✅ Adicionadas sugestões de implementação (models, client, service)
+- ✅ Atualizado STATE.md
+
+**Observações**:
+- Context7 MCP funcionou perfeitamente para consultar documentação externa
+- API RD Station Conversas v2 tem estrutura similar à API atual do projeto
+- Próximos passos: implementar integração com RD Conversas seguindo Clean Architecture
+
+---
+
 ### Sessão 2026-03-22
 
 **Objetivo**: Estruturar documentação do projeto com tlc-spec-driven e docs-writer.
@@ -258,8 +276,14 @@ Nenhuma preferência de modelo registrada ainda.
 
 ## 📚 Referências Úteis
 
+### Documentação Técnica
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [Pydantic Documentation](https://docs.pydantic.dev/)
 - [httpx Documentation](https://www.python-httpx.org/)
 - [pytest Documentation](https://docs.pytest.org/)
 - [Clean Architecture (Uncle Bob)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+
+### APIs Externas
+- [RD Station Conversas API v2](https://developers.rdstation.com/reference/conversas-v2-introduction) - Documentação oficial
+- [RD Station Developer Portal](https://developers.rdstation.com/) - Portal de desenvolvedores
+- Ver também: `references/rd-station-conversas-api.md` (documentação local)

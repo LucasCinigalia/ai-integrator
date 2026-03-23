@@ -22,6 +22,9 @@ class Settings(BaseSettings):
         default="https://api.example.com", description="URL base da API externa"
     )
     api_timeout: int = Field(default=30, description="Timeout para requisições HTTP em segundos")
+    api_token: Optional[str] = Field(
+        default=None, description="Token JWT pré-configurado da API externa"
+    )
 
     jwt_secret: str = Field(
         default="dev-secret-key-change-in-production",

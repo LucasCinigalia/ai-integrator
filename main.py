@@ -15,6 +15,7 @@ from fastapi.responses import JSONResponse
 
 from app.api.routes import items
 from app.core.config import settings
+from app.core.metrics import metrics
 from app.models.schemas import HealthResponse
 
 logging.basicConfig(
@@ -116,6 +117,22 @@ async def health_check() -> HealthResponse:
     return HealthResponse(
         status="healthy", version=settings.app_version, timestamp=datetime.now(timezone.utc)
     )
+
+
+@app.get(
+    "/metrics",
+    status_code=status.HTTP_200_OK,
+    summary="Application metrics",
+    description="Retorna métricas de uso da aplicação",
+)
+async def get_metrics() -> dict:
+    """
+    Endpoint de métricas.
+
+    Returns:
+        dict: Estatísticas de uso da aplicação
+    """
+    return metrics.get_stats()
 
 
 @app.exception_handler(Exception)
