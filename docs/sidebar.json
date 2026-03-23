@@ -1,0 +1,26 @@
+{
+  "docs": [
+    {
+      "title": "Introdução",
+      "path": "/docs/index"
+    },
+    {
+      "title": "Guia de instalação",
+      "path": "/docs/installation"
+    },
+    {
+      "title": "API e endpoints",
+      "path": "/docs/api"
+    },
+    {
+      "title": "Arquitetura",
+      "path": "/docs/architecture"
+    }
+  ],
+  "references": [
+    {
+      "title": "Guia de estilo",
+      "path": "/references/style-guide"
+    }
+  ]
+}

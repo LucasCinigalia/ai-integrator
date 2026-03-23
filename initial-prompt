@@ -1,0 +1,75 @@
+Quero que você atue como um arquiteto de software experiente e desenvolvedor sênior em Python.
+
+Crie a estrutura de um projeto Python profissional seguindo boas práticas de engenharia de software, com foco em:
+- Clean Architecture (ou arquitetura em camadas)
+- Separação de responsabilidades (SRP)
+- Código modular, escalável e de fácil manutenção
+- Uso de tipagem (type hints)
+- Boas práticas de organização de pastas
+
+## 📌 Contexto do Projeto
+O sistema será uma aplicação leve que consome uma API REST externa que utiliza autenticação JWT.
+
+## 🎯 Objetivo inicial
+Implementar uma base sólida do projeto com:
+- Estrutura de diretórios bem definida
+- Cliente HTTP para consumir API externa
+- Autenticação via JWT
+- Mock de endpoints (POST, GET, PUT)
+
+## 🧱 Arquitetura desejada
+Sugira e implemente uma estrutura parecida com:
+
+- `app/`
+  - `core/` → configurações, constantes, autenticação
+  - `services/` → regras de negócio
+  - `clients/` → integração com API externa
+  - `models/` → modelos de dados (Pydantic)
+  - `api/` → endpoints (caso use FastAPI)
+- `tests/`
+- `main.py`
+
+## 📚 Bibliotecas obrigatórias (usar as mais utilizadas no mercado)
+Utilize:
+- `fastapi` → criação de API
+- `httpx` → consumo de API externa (async)
+- `pydantic` → validação de dados
+- `python-dotenv` → variáveis de ambiente
+- `pytest` → testes
+- `uvicorn` → servidor
+
+## 🔐 Autenticação
+- Criar um módulo responsável por gerenciar o token JWT
+- Simular obtenção de token (mockado inicialmente)
+- Incluir o token automaticamente nas requisições HTTP
+
+## 🌐 Cliente HTTP
+- Criar uma classe cliente para API externa
+- Implementar métodos:
+  - `get_data()`
+  - `create_data()`
+  - `update_data()`
+
+## 🔁 Endpoints mockados
+Criar endpoints no FastAPI que simulem integração:
+
+- `GET /items` → retorna lista mockada
+- `POST /items` → cria item mockado
+- `PUT /items/{id}` → atualiza item mockado
+
+## 🧪 Testes
+- Criar pelo menos 1 teste para cada endpoint usando pytest
+
+## ⚙️ Extras importantes
+- Usar async/await
+- Separar configuração em arquivo `.env`
+- Criar um README explicando como rodar o projeto
+- Adicionar comentários explicando decisões arquiteturais
+
+## 📦 Entrega esperada
+- Estrutura completa do projeto
+- Código funcional
+- Explicação breve da arquitetura utilizada
+- Instruções para rodar localmente
+
+Gere o código de forma clara, organizada e pronta para uso em um projeto real.
