@@ -46,6 +46,11 @@ class Settings(BaseSettings):
     host: str = Field(default="0.0.0.0", description="Host do servidor")
     port: int = Field(default=8000, description="Porta do servidor")
 
+    rd_conversas_customer_id: Optional[str] = Field(
+        default="699719db91c5a05a80944390",
+        description="Customer ID fixo para RD Conversas (provisório enquanto extração do JWT não está correta)",
+    )
+
     rd_conversas_private_key_path: Optional[str] = Field(
         default="secrets/rd_conversas_private.jwk.json",
         description="Caminho para arquivo JWK com chave privada RSA para descriptografia (opcional)",

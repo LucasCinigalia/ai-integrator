@@ -44,7 +44,7 @@ def rd_conversas_test_client() -> TestClient:
 
 def test_messages_history_endpoint(rd_conversas_test_client) -> None:
     """Testa endpoint de histórico."""
-    response = rd_conversas_test_client.get("/api/v1/rd-conversas/messages/history")
+    response = rd_conversas_test_client.get("/v1/rd-conversas/messages/history")
     assert response.status_code == 200
     data = response.json()
     assert "messages" in data
@@ -57,7 +57,7 @@ def test_messages_history_endpoint(rd_conversas_test_client) -> None:
 def test_messages_history_endpoint_with_params(rd_conversas_test_client) -> None:
     """Testa endpoint com parâmetros de paginação."""
     response = rd_conversas_test_client.get(
-        "/api/v1/rd-conversas/messages/history?limit=10&offset=0"
+        "/v1/rd-conversas/messages/history?limit=10&offset=0"
     )
     assert response.status_code == 200
     data = response.json()

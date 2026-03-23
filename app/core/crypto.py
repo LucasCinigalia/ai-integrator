@@ -30,7 +30,8 @@ class MessageDecryptor:
             if missing_fields:
                 raise ValueError(f"Campos obrigatórios ausentes no JWK: {missing_fields}")
 
-            self.private_key = jwk.construct(jwk_dict)
+            # jwe.decrypt espera JWK dict ou str, não o objeto de jwk.construct()
+            self.private_key = jwk_dict
 
             logger.info("Chave privada JWK carregada com sucesso")
 
@@ -58,7 +59,10 @@ class MessageDecryptor:
         """
         try:
             decrypted_bytes = jwe.decrypt(encrypted_jwe, self.private_key)
-            decrypted_str = decrypted_bytes.decode("utf-8")
+            try:
+                decrypted_str = decrypted_bytes.decode("utf-8")
+            except UnicodeDecodeError:
+                decrypted_str = decrypted_bytes.decode("latin-1")
 
             try:
                 return json.loads(decrypted_str)

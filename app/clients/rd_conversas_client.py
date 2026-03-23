@@ -27,7 +27,11 @@ class RDConversasClient:
                 "Bearer token não configurado (API_TOKEN no .env)"
             )
 
-        self.customer_id = self._extract_customer_id_from_token()
+        # Provisório: usa customer_id fixo da config (extração do JWT com problemas)
+        self.customer_id = (
+            settings.rd_conversas_customer_id
+            or self._extract_customer_id_from_token()
+        )
         logger.info(
             "RDConversasClient inicializado com customer_id: %s",
             self.customer_id or "NENHUM",
@@ -130,8 +134,50 @@ class RDConversasClient:
                 except Exception:
                     pass
                 response.raise_for_status()
-
+            logger.info("Resposta da API: %s", response.text)
             data = response.json()
+            logger.info("Dados da resposta: %s", data)
+
+            # API Tallos retorna messages como JWE criptografado (recurso requer criptografia)
+            raw_messages = data.get("messages")
+            if isinstance(raw_messages, str) and raw_messages.strip():
+                if self.decryptor:
+                    try:
+                        decrypted = self.decryptor.decrypt_message(raw_messages)
+                        if isinstance(decrypted, list):
+                            data["messages"] = decrypted
+                        elif isinstance(decrypted, dict):
+                            data["messages"] = decrypted.get(
+                                "messages", decrypted.get("data", [])
+                            )
+                        elif isinstance(decrypted, str):
+                            parsed = json.loads(decrypted)
+                            data["messages"] = (
+                                parsed
+                                if isinstance(parsed, list)
+                                else parsed.get("messages", [])
+                                if isinstance(parsed, dict)
+                                else []
+                            )
+                        else:
+                            data["messages"] = []
+                    except (ValueError, json.JSONDecodeError) as e:
+                        logger.warning(
+                            "Falha ao descriptografar payload messages: %s", e
+                        )
+                        data["messages"] = []
+                else:
+                    try:
+                        data["messages"] = json.loads(raw_messages)
+                    except json.JSONDecodeError:
+                        logger.warning(
+                            "messages é JWE mas chave privada não configurada"
+                        )
+                        data["messages"] = []
+            elif isinstance(raw_messages, str) and not raw_messages.strip():
+                data["messages"] = []
+            elif not isinstance(raw_messages, list):
+                data["messages"] = []
 
             if self.decryptor and "messages" in data:
                 for message in data["messages"]:

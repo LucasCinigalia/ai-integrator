@@ -1,6 +1,8 @@
 """Service layer para RD Station Conversas API."""
 
 import logging
+from datetime import datetime
+from typing import Any, Dict
 
 from app.clients.rd_conversas_client import RDConversasClient
 from app.models.rd_conversas_schemas import (
@@ -10,6 +12,44 @@ from app.models.rd_conversas_schemas import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _map_api_message_to_content(msg: Dict[str, Any], index: int) -> MessageContent:
+    """Mapeia mensagem da API Tallos para MessageContent."""
+    msg_id = msg.get("id") or msg.get("_id") or f"msg_{index}"
+    contact = msg.get("contact") or {}
+    contact_phone = (
+        msg.get("contact_phone")
+        or msg.get("recipient_number")
+        or contact.get("phone")
+        or msg.get("from")
+        or msg.get("to")
+        or ""
+    )
+    message_text = msg.get("message") or msg.get("content") or ""
+    ts = msg.get("timestamp") or msg.get("created_at")
+    if ts is None:
+        timestamp = datetime.now()
+    elif isinstance(ts, datetime):
+        timestamp = ts
+    else:
+        ts_str = str(ts).replace("Z", "+00:00")
+        timestamp = datetime.fromisoformat(ts_str)
+    sent_by = msg.get("sent_by", "")
+    direction = (
+        "outbound"
+        if sent_by in ("operator", "bot")
+        else "inbound"
+    )
+    return MessageContent(
+        id=str(msg_id),
+        contact_phone=str(contact_phone),
+        message=str(message_text),
+        encrypted_message=msg.get("encrypted_message"),
+        timestamp=timestamp,
+        direction=direction,
+        status=msg.get("status"),
+    )
 
 
 class RDConversasService:
@@ -40,7 +80,8 @@ class RDConversasService:
         )
 
         messages = [
-            MessageContent(**msg) for msg in raw_data.get("messages", [])
+            _map_api_message_to_content(msg, i)
+            for i, msg in enumerate(raw_data.get("messages", []))
         ]
 
         return MessageHistoryResponse(
