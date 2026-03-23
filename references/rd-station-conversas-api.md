@@ -27,9 +27,11 @@ A **RD Station Conversas API v2** é uma API REST que permite integração com a
 - Gerenciamento de campos personalizados
 - Relatórios e análises
 
-**Base URL**: A ser confirmada na documentação oficial  
+**Base URL**: `https://api.tallos.com.br/v2`  
 **Formato**: JSON  
 **Protocolo**: HTTPS
+
+> **IMPORTANTE**: A URL base correta da API é `https://api.tallos.com.br/v2`, não `https://api.rdstation.com/conversas/v2`. Fonte: documentação oficial em https://api.tallos.com.br/v2
 
 ---
 
@@ -215,12 +217,20 @@ app/
 ### Configurações Necessárias (.env)
 
 ```env
-# RD Station Conversas API
-RD_CONVERSAS_CLIENT_ID=seu_client_id
-RD_CONVERSAS_CLIENT_SECRET=seu_client_secret
-RD_CONVERSAS_BASE_URL=https://api.rdstation.com/conversas/v2
-RD_CONVERSAS_AUTH_URL=https://api.rdstation.com/auth
+# API Configuration (reutilizada para RD Conversas)
+API_BASE_URL=https://api.tallos.com.br/v2
+API_TOKEN=seu_bearer_token_aqui
+
+# RD Station Conversas - Descriptografia (opcional)
+RD_CONVERSAS_PRIVATE_KEY_PATH=secrets/rd_conversas_private.jwk.json
 ```
+
+### Implementação Realizada
+
+- **URL Base**: `https://api.tallos.com.br/v2`
+- **Autenticação**: Bearer Token pré-configurado (API_TOKEN)
+- **Descriptografia**: JWE com RSA-OAEP-256 + A256GCM, chave JWK em arquivo separado
+- **Endpoint**: `GET /api/v1/rd-conversas/messages/history`
 
 ### Modelos Pydantic Sugeridos
 
@@ -340,10 +350,10 @@ class RDConversasClient:
 ### Próximos Passos
 
 1. ✅ Documentação da API adicionada
-2. ⏳ Criar modelos Pydantic (`rd_conversas_schemas.py`)
-3. ⏳ Implementar client HTTP (`rd_conversas_client.py`)
-4. ⏳ Implementar service layer (`rd_conversas_service.py`)
-5. ⏳ Criar endpoints FastAPI (`rd_conversas.py`)
+2. ✅ Criar modelos Pydantic (`rd_conversas_schemas.py`)
+3. ✅ Implementar client HTTP (`rd_conversas_client.py`)
+4. ✅ Implementar service layer (`rd_conversas_service.py`)
+5. ✅ Criar endpoints FastAPI (`rd_conversas.py`)
 6. ⏳ Adicionar testes unitários
 7. ⏳ Adicionar testes de integração
 8. ⏳ Documentar no README.md

@@ -1,10 +1,14 @@
 """Configurações da aplicação usando Pydantic Settings."""
 
+import logging
 from functools import lru_cache
+from pathlib import Path
 from typing import Optional
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+logger = logging.getLogger(__name__)
 
 
 class Settings(BaseSettings):
@@ -19,7 +23,7 @@ class Settings(BaseSettings):
     )
 
     api_base_url: str = Field(
-        default="https://api.example.com", description="URL base da API externa"
+        default="https://api.tallos.com.br/v2", description="URL base da API RD Station Conversas (Tallos)"
     )
     api_timeout: int = Field(default=30, description="Timeout para requisições HTTP em segundos")
     api_token: Optional[str] = Field(
@@ -41,6 +45,30 @@ class Settings(BaseSettings):
 
     host: str = Field(default="0.0.0.0", description="Host do servidor")
     port: int = Field(default=8000, description="Porta do servidor")
+
+    rd_conversas_private_key_path: Optional[str] = Field(
+        default="secrets/rd_conversas_private.jwk.json",
+        description="Caminho para arquivo JWK com chave privada RSA para descriptografia (opcional)",
+    )
+
+    @property
+    def rd_conversas_private_key_jwk(self) -> Optional[str]:
+        """Carrega chave privada JWK do arquivo."""
+        if not self.rd_conversas_private_key_path:
+            return None
+
+        key_path = Path(self.rd_conversas_private_key_path)
+        if not key_path.exists():
+            logger.warning(
+                "Arquivo de chave privada não encontrado: %s", key_path
+            )
+            return None
+
+        try:
+            return key_path.read_text(encoding="utf-8")
+        except Exception as e:
+            logger.error("Erro ao ler chave privada: %s", e)
+            return None
 
 
 @lru_cache

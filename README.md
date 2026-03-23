@@ -278,6 +278,31 @@ DELETE /items/{item_id}
 curl -X DELETE "http://localhost:8000/items/550e8400-e29b-41d4-a716-446655440001"
 ```
 
+### RD Station Conversas
+
+#### Histórico de mensagens
+
+```http
+GET /api/v1/rd-conversas/messages/history
+```
+
+**Parâmetros de query:**
+- `limit` (opcional): Número de mensagens (1-100, padrão: 50)
+- `offset` (opcional): Offset para paginação (padrão: 0)
+- `contact_phone` (opcional): Filtrar por telefone
+- `start_date` (opcional): Data inicial (ISO 8601)
+- `end_date` (opcional): Data final (ISO 8601)
+
+**Exemplo:**
+```bash
+curl -X GET "http://localhost:8000/api/v1/rd-conversas/messages/history?limit=50&offset=0"
+```
+
+**Configuração necessária (.env):**
+- `API_BASE_URL`: URL da API Tallos (`https://api.tallos.com.br/v2`)
+- `API_TOKEN`: Bearer Token válido do RD Station Conversas
+- `RD_CONVERSAS_PRIVATE_KEY_PATH` (opcional): Caminho para chave JWK para descriptografia
+
 ## 🔐 Autenticação
 
 O sistema implementa gerenciamento automático de tokens JWT através da classe `JWTManager`:

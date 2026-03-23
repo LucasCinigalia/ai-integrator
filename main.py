@@ -13,7 +13,7 @@ from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api.routes import items
+from app.api.routes import items, rd_conversas
 from app.core.config import settings
 from app.core.metrics import metrics
 from app.models.schemas import HealthResponse
@@ -76,6 +76,7 @@ app.add_middleware(
 )
 
 app.include_router(items.router)
+app.include_router(rd_conversas.router, prefix="/v1")
 
 
 @app.get(
